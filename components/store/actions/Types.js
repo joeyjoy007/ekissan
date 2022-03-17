@@ -1,0 +1,23 @@
+export const USER_LOAD = "USER_LOAD"
+export const USER_LOADED = "USER_LOADED"
+export const USER_FAILED = "USER_FAILED"
+
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
+export const LOGIN_FAILED = "LOGIN_FAILED"
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS"
+
+export const REG_LOADING = "REG_LOADING"
+export const REG_SUCCESS = "REG_SUCCESS"
+export const REG_FAILED = "REG_FAILED"
+
+export const LOG_LOADING = "LOG_LOADINGS"
+
+export const SENDING_PRODUCTS = "SENDING_PRODUCTS"
+export const LOADING_PRODUCTS = "LOADING_PRODUCTS"
+export const SENDING_PRODUCTS = "SENT_PRODUCTS"
+export const LOADED_PRODUCTS = "LOADED_PRODUCTS"
+export const DELETE_PRODUCTS = "DELETE_PRODUCTS"
+
+export const GET_ERRORS = "GET_ERRORS"
+export const CLEAR_ERROR = "CLEAR_ERROR"
+
