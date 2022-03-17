@@ -16,7 +16,7 @@ const ProductPage = () => {
     const addItem = async()=>{
         const token = await AsyncStorage.getItem("token");
         console.log("TOKEN",token)
-        await fetch("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/create",{
+        await fetch("http://localhost:4000/create",{
             method:"POST",
                 headers:{
                     "Content-Type":"application/json",

@@ -1,7 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Checkbox from 'expo-checkbox';
-import { useState } from "react";
+import {useDispatch,useSelector} from 'react-redux'
+import { useEffect, useState } from "react";
 import AppLoading from 'expo-app-loading';
 import {
   useFonts,
@@ -17,44 +18,73 @@ import {
 } from '@expo-google-fonts/montserrat';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { login } from "./store/actions/authentication";
+import Loader from "./Loader";
+
 const Login = ({navigation}) =>{
 
 
+const dispatch = useDispatch()
+
+const auth = useSelector((state)=>state.auth)
+const error = useSelector((state)=>state.err)
 
 
     const [agree, setAgree] = useState(false)
     const [email, setEmail] = useState("")
     const [name, setName] = useState("")
+    
   
     const [password, setPassword] = useState("")
   
-      const onLogin =async ()=>{
+      const onLogin =()=>{
 
+      dispatch(login({name,email,password}))
        
-  const {data}=await axios.post("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/signin",{
-    name,email,password
-  },{
-    
-       
-    headers:{
-      "Content-Type":"application/json"
-  },
-
-   })
-   
-     try {
-       await AsyncStorage.setItem("token",data.token)
+  // const {data}=await axios.post("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/signin",{
+  //   name,email,password
+  // },{
+ 
+  //   headers:{
+  //     "Content-Type":"application/json"
+  // },
+  //  })
+  //    try {
+  //      await AsyncStorage.setItem("token",data.token)
      
-        navigation.replace("Home")
-     } catch (error) {
-         console.log(error);
-     }
-  
+  //       navigation.replace("Home")
+  //    } catch (error) {
+  //        console.log(error);
+  //    }
+
     }
 
     const navigatetoRegister = ()=>{
       navigation.navigate("Register")
     }
+    const getToken = async(token)=>{
+      if(token){
+        try {
+          await AsyncStorage.removeItem("token");
+          await AsyncStorage.setItem("token",token)
+
+        } catch (error) {
+          console.log("d",error.message)
+        }
+      }
+    }
+   
+    useEffect(() => {
+      const {isAuthenticate,token}=auth
+      getToken(token)
+     
+      if(isAuthenticate){
+        navigation.replace("Home")
+      }
+     }, [auth])
+    
+
+    
   
     let [fontsLoaded] = useFonts({
     
@@ -134,6 +164,8 @@ const Login = ({navigation}) =>{
         <TouchableOpacity onPress={()=>navigatetoRegister()} style={{paddingVertical:20}}>
         <Text style={styles.wrapperText}>Already have an account <Text style={{fontWeight:"bold"}}>Register</Text></Text>
         </TouchableOpacity>
+        {auth.logLoading ? <Loader/> :null}
+        
       </View>
     );
   }

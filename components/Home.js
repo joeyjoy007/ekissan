@@ -2,14 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {useDispatch} from "react-redux"
+import { logoutt } from "./store/actions/authentication";
 
 const Home = ({ navigation }) => {
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
+
+  const dispatch = useDispatch()
 
   const boiler = async () => {
     try {
       const token = await AsyncStorage.getItem("token");
-const {data} = await axios.get("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/f", {
+const {data} = await axios.get("http://localhost:4000/f", {
       headers: {
         "Content-Type":"application/json",
         Authorization: `Bearer ${token}`,
@@ -17,7 +21,7 @@ const {data} = await axios.get("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6
     })
     
       setEmail(data.email)
-      console.log(email)
+     
     } catch (error) {
       console.log(error.message)
       
@@ -39,14 +43,13 @@ const {data} = await axios.get("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6
   // const {myName} = route.params
 
   const logout = () => {
-    AsyncStorage.removeItem("token").then(() => {
-      navigation.replace("Login");
-    });
+    dispatch(logoutt())
+    navigation.replace("Login")
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.containerText}>Your Email is {email?email:""}</Text>
+      <Text style={styles.containerText}>Your Email is {email}</Text>
       <Button
         style={styles.buttonStyle}
         onPress={() => logout()}

@@ -28,30 +28,30 @@ const ViewProducts = () => {
   const [refresh, setRefresh] = useState(false)
   const [searchData, setSearchData] = useState("")
 
-  const getProduct = async()=>{
-    const token = await AsyncStorage.getItem("token")
+//   const getProduct = async()=>{
+//     const token = await AsyncStorage.getItem("token")
     
-    const {data} = await axios.get("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/getProduct",{
-      headers:{
-          "Content-Type":"application/json",
-          Authorization: `Bearer ${token}`,
-      },
-    })
-    console.log(data)
-    setGp(data)
-}
+//     const {data} = await axios.get("http://localhost:4000/getProduct",{
+//       headers:{
+//           "Content-Type":"application/json",
+//           Authorization: `Bearer ${token}`,
+//       },
+//     })
+  
+//     setGp(data.product)
+// }
 
 
     
      
 
-useEffect(() => {
- getProduct()
-}, [])
+// useEffect(() => {
+//  getProduct()
+// }, [])
 
 const searchProduct =async ()=>{
   const token = await AsyncStorage.getItem("token")
- const {data} = await axios.get(`http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/search?search=${searchData}`,{
+ const {data} = await axios.get(`http://localhost:4000/search?search=${searchData}`,{
       
       headers:{
           "Content-Type":"application/json",
@@ -59,7 +59,9 @@ const searchProduct =async ()=>{
       }
 
   })
+ 
   setGp(data)
+ 
    }
  
 
@@ -86,29 +88,52 @@ useEffect(() => {
      return <AppLoading/>;
    }
 
-  const data = [
-    {
-      name: "garvit",
-      price: 234567,
-      location: "location",
-      pinCode: 34434,
-    },
-    {
-      name: "jay",
-      price: 8787,
-      location: "Chandigarh",
-      pinCode: 458441,
-    },
-    {
-      name: "kapil",
-      price: 8767,
-      location: "aasam",
-      pinCode: 458441,
-    },
-  ];
+  // const data = [
+  //   {
+  //     name: "garvit",
+  //     price: 234567,
+  //     location: "location",
+  //     pinCode: 34434,
+  //   },
+  //   {
+  //     name: "jay",
+  //     price: 8787,
+  //     location: "Chandigarh",
+  //     pinCode: 458441,
+  //   },
+  //   {
+  //     name: "kapil",
+  //     price: 8767,
+  //     location: "aasam",
+  //     pinCode: 458441,
+  //   },
+  // ];
 
 
- 
+ const renderData = ({item})=>{
+  return (
+    <View>
+      <View style={styles.card}>
+        <View style={{display:"flex",flexDirection:"column"}}>
+          <View style={[styles.cardItem]}>
+            <Text style={[styles.productName,{alignSelf:"flex-end"},styles.rent]}> OnRent</Text>
+            <Text style={styles.productName}>   {item.name}</Text>
+          </View>
+          <View style={styles.cardItem}>
+            <Text style={styles.productName}>₹ {item.price}</Text>
+          </View>
+          <View style={styles.cardItem}>
+           <Text style={styles.productName}><Icon name="location-pin" size={14} color="black" /> {item.location}</Text>
+          </View>
+        </View>
+
+        <View style={[styles.cardItem,{alignSelf:"flex-end"}]}>
+          <Text style={styles.productName}>Pincode: {item.pinCode}</Text>
+        </View>
+      </View>
+    </View>
+  );
+ }
      
 
 
@@ -123,34 +148,12 @@ useEffect(() => {
     onChangeText={(text)=>setSearchData(text)}
 
     style={{width:width-20,marginHorizontal:10}}
+    
   />
       <FlatList
         data={gp}
         
-        renderItem={(e) => {
-          return (
-            <View>
-              <View style={styles.card}>
-                <View style={{display:"flex",flexDirection:"column"}}>
-                  <View style={[styles.cardItem]}>
-                    <Text style={[styles.productName,{alignSelf:"flex-end"},styles.rent]}> OnRent</Text>
-                    <Text style={styles.productName}>   {e.item.name}</Text>
-                  </View>
-                  <View style={styles.cardItem}>
-                    <Text style={styles.productName}>₹ {e.item.price}</Text>
-                  </View>
-                  <View style={styles.cardItem}>
-                   <Text style={styles.productName}><Icon name="location-pin" size={14} color="black" /> {e.item.location}</Text>
-                  </View>
-                </View>
-
-                <View style={[styles.cardItem,{alignSelf:"flex-end"}]}>
-                  <Text style={styles.productName}>Pincode: {e.item.pinCode}</Text>
-                </View>
-              </View>
-            </View>
-          );
-        }}
+        renderItem={renderData}
         
         keyExtractor={(item) => item.name}
           showsHorizontalScrollIndicator={false}

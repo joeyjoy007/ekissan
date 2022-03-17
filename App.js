@@ -4,26 +4,35 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from "./components/Login";
 import Home from "./components/Home";
-import Async from "./components/Async";
+
 import Register from "./components/Register";
 import { useEffect, useState } from "react";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "./components/Loading";
 import ProductPage from "./components/addProduct/ProductPage";
 import ViewProducts from "./components/viewProducts/ViewProducts";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-
+import { Provider,useDispatch } from 'react-redux';
+import store from './components/store/index'
 
 
 import UserProfile from "./components/user/userProfile";
 import axios from "axios";
 
+import { loadUser } from "./components/store/actions/authentication";
+
+
+const stack = createNativeStackNavigator()
 
 export default function App() {
-const stack = createNativeStackNavigator()
+
+
+
+
 
 
 const [isLoggedIn, setIsLoggedIn] = useState(null)
+
 
 
 const detectLogin = async()=>{
@@ -42,12 +51,15 @@ detectLogin()
 }, [])
 
 
+
+
   return (
+    <Provider store={store}>
     
     <NavigationContainer>
 
    
-    <stack.Navigator initialRouteName="UserProfile">
+    <stack.Navigator initialRouteName="Register">
 
 
     
@@ -78,6 +90,8 @@ detectLogin()
 
 
     </NavigationContainer>
+    </Provider>
+    
    
   );
 

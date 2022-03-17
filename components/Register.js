@@ -1,8 +1,9 @@
-import { StatusBar } from "expo-status-bar";
+
 import { Alert, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import Checkbox from 'expo-checkbox';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppLoading from 'expo-app-loading';
+import {useDispatch , useSelector} from 'react-redux'
 import {
   useFonts,
 
@@ -17,7 +18,13 @@ import {
 } from '@expo-google-fonts/montserrat';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { loadUser, register } from "./store/actions/authentication";
+import Loader from "./Loader";
 const Register = ({navigation}) =>{
+  const dispatch = useDispatch()
+
+  const auth = useSelector((state)=>state.auth)
+  const error = useSelector((state)=>state.err)
 
     const [agree, setAgree] = useState(false)
     const [email, setEmail] = useState("")
@@ -26,26 +33,38 @@ const Register = ({navigation}) =>{
     const [password, setPassword] = useState("")
   
     const onRegister =async ()=>{
-   const {data} = await axios.post("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/signup",{
-     name,email,password
-   },{
-       headers:{
-           "Content-Type":"application/json"
-       },
-   })
-   try {
-    await AsyncStorage.setItem("token",data.token)
-    navigation.replace("Home")
- } catch (error) {
-     console.log(error.message);
- }
+      dispatch(register({name,email,password}))
+//    const {data} = await axios.post("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/signup",{
+//      name,email,password
+//    },{
+//        headers:{
+//            "Content-Type":"application/json"
+//        },
+//    })
+//    try {
+//     await AsyncStorage.setItem("token",data.token)
+//     navigation.replace("Home")
+//  } catch (error) {
+//      console.log(error.message);
+//  }
 
     }
 
     const navigatetoLogin = ()=>{
       navigation.navigate("Login")
     }
-  
+    useEffect(() => {
+     
+      if(auth.isAuthenticate){
+        navigation.replace("Home")
+      }
+    }, [auth])
+
+
+    // useEffect(() => {
+    //   dispatch(loadUser())
+    // }, [])
+    
     let [fontsLoaded] = useFonts({
     
      bold: Montserrat_300Light,
@@ -61,6 +80,9 @@ const Register = ({navigation}) =>{
     {
       return <AppLoading/>;
     }
+
+
+    
   
     return (
       <View style={styles.container}>
@@ -129,6 +151,7 @@ const Register = ({navigation}) =>{
         <TouchableOpacity onPress={()=>navigatetoLogin()} style={{paddingVertical:20}}>
         <Text style={styles.wrapperText}>Already have an account <Text style={{fontWeight:"bold"}}>Login</Text></Text>
         </TouchableOpacity>
+       {auth.regLoading ? <Loader/> :null}
       </View>
     );
   }
