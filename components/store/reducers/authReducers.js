@@ -37,6 +37,13 @@ export default(state=initial,{payload,type})=>{
                 }
 
             case LOGOUT_SUCCESS:
+                return{
+                    ...state,
+                    regLoading:false,
+                    isAuthenticate:null,
+                    user:null,
+                    logLoading:false
+                }
             case USER_FAILED:
             return{
                 ...state,

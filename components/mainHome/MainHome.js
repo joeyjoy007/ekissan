@@ -1,43 +1,54 @@
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import {useDispatch} from "react-redux"
-import { logoutt } from "./store/actions/authentication";
+import { useDispatch } from "react-redux";
 
-const Home = ({ navigation }) => {
+
+import Home from '../Homes/Home';
+import Home2 from '../Homes/Home2';
+import { logoutt } from "../store/actions/authentication";
+
+// import {useDispatch} from "react-redux"
+// import { logoutt } from "./store/actions/authentication";
+
+const MainHome = ({ navigation }) => {
   const [email, setEmail] = useState("");
 
+
+
+ 
   const dispatch = useDispatch()
 
-  const boiler = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-const {data} = await axios.get("http://localhost:4000/f", {
-      headers: {
-        "Content-Type":"application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
+//   const boiler = async () => {
+//     try {
+//       const token = await AsyncStorage.getItem("token");
+// const {data} = await axios.get("http://localhost:4000/f", {
+//       headers: {
+//         "Content-Type":"application/json",
+//         Authorization: `Bearer ${token}`,
+//       },
+//     })
     
-      setEmail(data.email)
+//       setEmail(data.email)
      
-    } catch (error) {
-      console.log(error.message)
+//     } catch (error) {
+//       console.log(error.message)
       
-    }
-  };
+//     }
+//   };
 
-  useEffect(() => {
-    boiler();
-  }, []);
+//   useEffect(() => {
+//     boiler();
+//   }, []);
 
-  const navigateToCreateProduct = ()=>{
-    navigation.navigate("Product")
+  const navigateToHome = ()=>{
+    navigation.navigate("Home")
   }
 
-  const navigateToGetProducts = ()=>{
-    navigation.navigate("ViewProducts")
+  const navigateToHome2 = ()=>{
+    navigation.navigate("Home2")
   }
 
   // const {myName} = route.params
@@ -47,41 +58,47 @@ const {data} = await axios.get("http://localhost:4000/f", {
     navigation.replace("Login")
   };
 
+
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.containerText}>Your Email is {email}</Text>
-      <Button
+    
+    <View>
+
+
+   
+    
+<TouchableOpacity onPress={()=>navigateToHome()}>
+      <View style={styles.card}>
+        <View>
+          <View style={[styles.card, styles.shadowProp]}>
+            <Text style={styles.heading}>
+              TransPortation Vehicle
+            </Text>
+          </View>
+        </View>
+      </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigateToHome2()}>
+      <View style={styles.card}>
+        <View>
+          <View style={[styles.card, styles.shadowProp]}>
+            <Text style={styles.heading}>
+              Agriculture Machineries
+            </Text>
+          </View>
+        </View>
+      </View>
+      </TouchableOpacity>
+       {/* <Button
         style={styles.buttonStyle}
         onPress={() => logout()}
         title="Logout"
-      />
-<TouchableOpacity onPress={()=>navigateToCreateProduct()}>
-      <View style={styles.card}>
-        <View>
-          <View style={[styles.card, styles.shadowProp]}>
-            <Text style={styles.heading}>
-              Create Product
-            </Text>
-          </View>
-        </View>
-      </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=>navigateToGetProducts()}>
-      <View style={styles.card}>
-        <View>
-          <View style={[styles.card, styles.shadowProp]}>
-            <Text style={styles.heading}>
-              View Products
-            </Text>
-          </View>
-        </View>
-      </View>
-      </TouchableOpacity>
+       />*/}
     </View>
   );
 };
 
-export default Home;
+export default MainHome;
 const styles = StyleSheet.create({
   container: {
     height: "100%",

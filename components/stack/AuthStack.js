@@ -1,43 +1,38 @@
-import 'react-native-gesture-handler';
 import { Button, Image, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Login from "./components/Login";
-import Home from "./components/Homes/Home";
+import Login from "../Login";
+import Home from "../Homes/Home";
 
-import Register from "./components/Register";
+import Register from "../Register";
 import { useEffect, useState } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Loading from "./components/Loading";
-import ProductPage from "./components/addProduct/ProductPage";
-import ViewProducts from "./components/viewProducts/ViewProducts";
+import Loading from "../Loading";
+import ProductPage from "../addProduct/ProductPage";
+import ViewProducts from "../viewProducts/ViewProducts";
 import { Provider,useDispatch } from 'react-redux';
-import store from './components/store/index'
+import store from '../store/index'
 import { Avatar } from 'react-native-paper';
 
 
-import UserProfile from "./components/user/userProfile";
+import UserProfile from "../user/userProfile";
 import axios from "axios";
 
-import { loadUser } from "./components/store/actions/authentication";
-import MainHome from "./components/mainHome/MainHome";
-import Home2 from "./components/Homes/Home2";
-import AddMachinaries from "./components/addProduct/addMachinaries";
-import ViewMachinaries from "./components/viewProducts/ViewMachinaries";
-import Drawer from './components/mainHome/Drawer';
-import DetailedProduct from './components/viewProducts/DetailedProduct';
-import ContextApis from './components/context/ContextApi';
-
+import { loadUser } from "../store/actions/authentication";
+import MainHome from "../mainHome/MainHome";
+import Home2 from "../Homes/Home2";
+import AddMachinaries from "../addProduct/addMachinaries";
+import ViewMachinaries from "../viewProducts/ViewMachinaries";
 
 
 const stack = createNativeStackNavigator()
 
-export default function App() {
+export default function AuthStack() {
 
 
- 
+
 
 
 
@@ -65,17 +60,14 @@ detectLogin()
 
   return (
 
-    <Provider store={store}>
-    <ContextApis>
-
-    <NavigationContainer>
+  
 
    
     <stack.Navigator initialRouteName="Register" screenOptions={{headerStyle: {
-          backgroundColor: '#f4511e',
-        },  headerTintColor: '#fff',headerTitleStyle: {
-          fontWeight: 'bold',
-        },headerTitleAlign:"center"}} >
+      backgroundColor: '#f4511e',
+    },  headerTintColor: '#fff',headerTitleStyle: {
+      fontWeight: 'bold',
+    },headerTitleAlign:"center"}} >
 
 
     
@@ -91,7 +83,6 @@ detectLogin()
         <stack.Screen name="Home2" component={Home2}
     
         />
-        <stack.Screen name="Drawer" options={{title:"eKisaan"}} component={Drawer}  />
         <stack.Screen name="Register" component={Register}
         
         />
@@ -99,10 +90,10 @@ detectLogin()
         
         />
         <stack.Screen name="Product" component={ProductPage}
+        
+       
+       
         />
-        <stack.Screen name="ProductDetail" component={DetailedProduct}
-        />
-
         <stack.Screen name="AddMachinaries" component={AddMachinaries}
         
         />
@@ -147,7 +138,6 @@ detectLogin()
         <stack.Screen name="ViewMachinaries" component={ViewMachinaries} />
         <stack.Screen name="UserProfile" component={UserProfile}  />
         
-        
 
       
     
@@ -158,9 +148,7 @@ detectLogin()
     </stack.Navigator>
 
 
-    </NavigationContainer>
-    </ContextApis>
-    </Provider>
+    
     
    
   );

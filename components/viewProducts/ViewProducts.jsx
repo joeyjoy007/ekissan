@@ -1,7 +1,7 @@
-import { Dimensions, FlatList, StyleSheet, Text, View } from "react-native";
+import { Dimensions, FlatList, StyleSheet, Text, View ,TouchableOpacity} from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Button } from "react-native-paper";
+import { ActivityIndicator, Button } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Avatar, Card, Title, Paragraph } from "react-native-paper";
 import Icon from 'react-native-vector-icons/Entypo'
@@ -21,12 +21,19 @@ import {
 } from '@expo-google-fonts/montserrat';
 import AppLoading from "expo-app-loading";
 import axios from "axios";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { NavigationContainer } from "@react-navigation/native";
+import { FarmerState } from "../context/ContextApi";
 
-const ViewProducts = () => {
+const ViewProducts = ({navigation}) => {
   const [gp, setGp] = useState([]);
 
   const [refresh, setRefresh] = useState(false)
-  const [searchData, setSearchData] = useState("")
+  const [searchData, setSearchData] = useState([])
+  const [term, setTerm] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const {token} = FarmerState()
 
 //   const getProduct = async()=>{
 //     const token = await AsyncStorage.getItem("token")
@@ -50,17 +57,20 @@ const ViewProducts = () => {
 // }, [])
 
 const searchProduct =async ()=>{
-  const token = await AsyncStorage.getItem("token")
- const {data} = await axios.get(`http://localhost:4000/search?search=${searchData}`,{
+  setLoading(true)
+  // const token = await AsyncStorage.getItem("token")
+ const {data} = await axios.get(`http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/search?search=${searchData}`,{
       
       headers:{
           "Content-Type":"application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token._W}`,
       }
 
   })
- 
+ setLoading(false)
   setGp(data)
+  
+  console.log(data)
  
    }
  
@@ -68,6 +78,7 @@ const searchProduct =async ()=>{
 
 
 useEffect(() => {
+  
  searchProduct()
 }, [searchData])
 
@@ -108,11 +119,73 @@ useEffect(() => {
   //     pinCode: 458441,
   //   },
   // ];
+const navigateToDetail=(item)=>{
+ console.log(item)
+  navigation.navigate("ProductDetail",{
+    detail:item
+  })
+}
+
+//  const renderData = ({item})=>{
+//   return (
+    
+//     <View>
+//     <TouchableOpacity onPress={k}>
+//       <View style={styles.card}>
+//         <View style={{display:"flex",flexDirection:"column"}}>
+//           <View style={[styles.cardItem]}>
+//             <Text style={[styles.productName,{alignSelf:"flex-end"},styles.rent]}> OnRent</Text>
+//             <Text style={styles.productName}>   {item.name}</Text>
+//           </View>
+//           <View style={styles.cardItem}>
+//             <Text style={styles.productName}>₹ {item.price}</Text>
+//           </View>
+//           <View style={styles.cardItem}>
+//            <Text style={styles.productName}><Icon name="location-pin" size={14} color="black" /> {item.location}</Text>
+//           </View>
+//         </View>
+
+//         <View style={[styles.cardItem,{alignSelf:"flex-end"}]}>
+//           <Text style={styles.productName}>Pincode: {item.pinCode}</Text>
+//         </View>
+//       </View>
+//       </TouchableOpacity>
+//     </View>
+  
+
+//   );
+//  }
+     
 
 
- const renderData = ({item})=>{
+
+
+
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
+    <Searchbar
+    placeholder="Search"
+    value = {searchData}
+    onChangeText={(text)=>setSearchData(text)}
+
+    style={{width:width-20,marginHorizontal:10}}
+    // onEndEditing = {()=>{
+    //   setSearchData(term)
+    // }}
+    
+  />
+  {loading ?(
+    <View style={{display:"flex",justifyContent:"center",height:"90%"}}>
+   <ActivityIndicator size="large" animating={true} color={Colors.blue800} />
+   </View>):(
+    <FlatList
+    data={gp}
+    
+    renderItem={({item})=>(
+      <TouchableOpacity onPress={()=>navigateToDetail(item)}>
+      
+      <View>
+   
       <View style={styles.card}>
         <View style={{display:"flex",flexDirection:"column"}}>
           <View style={[styles.cardItem]}>
@@ -131,35 +204,20 @@ useEffect(() => {
           <Text style={styles.productName}>Pincode: {item.pinCode}</Text>
         </View>
       </View>
+    
     </View>
-  );
- }
-     
-
-
-
-
-
-  return (
-    <SafeAreaView style={styles.container}>
-    <Searchbar
-    placeholder="Search"
-    value = {searchData}
-    onChangeText={(text)=>setSearchData(text)}
-
-    style={{width:width-20,marginHorizontal:10}}
+      
+      
+      </TouchableOpacity>
+    )}
+    
+    keyExtractor={(item) => item.name}
+      showsHorizontalScrollIndicator={false}
+    
     
   />
-      <FlatList
-        data={gp}
-        
-        renderItem={renderData}
-        
-        keyExtractor={(item) => item.name}
-          showsHorizontalScrollIndicator={false}
-        
-        
-      />
+   )
+   }
    
     </SafeAreaView>
   );

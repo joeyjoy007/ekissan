@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "slug": "AwesomeProject",
-    "version": "1.0.0",
+    "name": "ekisaan",
+    "slug": "ekisaan",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -17,17 +17,20 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
+  
    
     "android": {
+      "config":{
+        "googleMaps":{
+          "apiKey":"AIzaSyCeyR-df8V0paipuCBfPPIwdsKL2BR9MyY"
+        }
+      },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package":"com.lng.AwesomeProject",
-      "versionCode":1
+      "package":"com.lng.ekisaan",
+      "versionCode":4
     },
     "web": {
       "favicon": "./assets/favicon.png"

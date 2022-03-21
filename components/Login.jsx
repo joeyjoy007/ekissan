@@ -39,6 +39,7 @@ const error = useSelector((state)=>state.err)
   
       const onLogin =()=>{
 
+
       dispatch(login({name,email,password}))
        
   // const {data}=await axios.post("http://4c3b-2409-4043-4e04-fc6e-5dff-6dd9-2bfb-6bac.ngrok.io/signin",{
@@ -74,12 +75,12 @@ const error = useSelector((state)=>state.err)
       }
     }
    
-    useEffect(() => {
+    useEffect(() => {  
       const {isAuthenticate,token}=auth
       getToken(token)
      
       if(isAuthenticate){
-        navigation.replace("Home")
+        navigation.replace("Drawer")
       }
      }, [auth])
     
@@ -105,7 +106,7 @@ const error = useSelector((state)=>state.err)
     return (
       <View style={styles.container}>
         <Text style={styles.mainHeader}>Login</Text>
-        <Text style={styles.description}>You can reach us anytime via garvitjain5558@gmail.com</Text>
+        <Text style={styles.description}></Text>
 
         <View style={styles.inputcontainer}>
         <Text style={styles.labels}>Enter Your Name</Text>

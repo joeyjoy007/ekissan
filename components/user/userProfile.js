@@ -1,7 +1,30 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { FarmerState } from '../context/ContextApi'
 
 const UserProfile = () => {
+  const {token} = FarmerState()
+
+    const [userData, setUserData] = useState("fetching...")
+
+    const fetchUserDetail = async()=>{
+      // const token = await AsyncStorage.getItem("token")
+      const {data} = await axios.get("http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/f", {
+        headers: {
+          "Content-Type":"application/json",
+          Authorization: `Bearer ${token._W}`,
+        }},)
+        setUserData(data)
+   AsyncStorage.setItem("userData",data)
+
+    }
+    useEffect(() => {
+      fetchUserDetail()
+    }, [])
+    
+
   return (
     <View>
     <View style={styles.background}>
@@ -11,10 +34,10 @@ const UserProfile = () => {
       <View style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:20,padding:20}}>
       
       <View >
-      <Text  style={styles.name}>Name: Piyush</Text>
+      <Text  style={styles.name}>Name: {userData.name}</Text>
       </View>
       <View style={styles.email}>
-      <Text  style={styles.email}>Email: Piyush@gmail.com</Text>
+      <Text  style={styles.email}>Email: {userData.email}</Text>
       </View>
       </View>
     </View>

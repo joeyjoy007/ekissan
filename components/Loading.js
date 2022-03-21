@@ -8,7 +8,7 @@ const Loading = ({navigation}) => {
     const token = await AsyncStorage.getItem("token")
 
     if(token){
-      navigation.replace("Home")
+      navigation.replace("Drawer")
     }
     else{
      navigation.replace("Login")

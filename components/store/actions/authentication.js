@@ -9,7 +9,7 @@ export const register =  ({name,email,password})=>async(dispatch)=>{
     const data = JSON.stringify({name,email,password})
     await axios({
         method:"POST",
-        url:"http://localhost:4000/signup",
+        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/signup",
         data,
         headers:{
             "Content-Type":"application/json",
@@ -34,7 +34,7 @@ export const login =  ({name,email,password})=>async(dispatch)=>{
     
     await axios({
         method:"POST",
-        url:"http://localhost:4000/signin",
+        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/signin",
         data,
         headers:{
             "Content-Type":"application/json"
@@ -58,7 +58,7 @@ export const loadUser = ()=>async(dispatch)=>{
 
     await axios({
         method:"POST",
-        url:"http://localhost:4000/user",
+        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/user",
         data,
         headers:{
             "Content-Type":"application/json",
