@@ -1,16 +1,14 @@
-// import React from 'react';
-// import {AppRegistry} from 'react-native';
-// import { Provider } from 'react-redux';
-// import App from './App';
-// import {name as appName} from './app.json';
-// import store from './components/store/index'
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
 
-
-// const AppRedux = ()=>{
-// <Provider store={{...store}}>
-// <App/>
-// </Provider>
+// const index = () => {
+//   return (
+//    <View>
+//    <App/>
+//    </View>
+//   )
 // }
 
+// export default index
 
-// AppRegistry.registerComponent(appName, () => App);
+// const styles = StyleSheet.create({})

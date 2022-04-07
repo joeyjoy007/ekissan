@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import axios from "axios"
-import { returnAction } from "./err"
+
 import { CLEAR_ERROR, GET_ERRORS, LOGIN_FAILED, LOGIN_SUCCESS, LOGOUT_SUCCESS, LOG_LOADING, REG_FAILED, REG_LOADING, REG_SUCCESS, USER_LOADED } from "./Types"
 
 export const register =  ({name,email,password})=>async(dispatch)=>{
@@ -9,11 +9,11 @@ export const register =  ({name,email,password})=>async(dispatch)=>{
     const data = JSON.stringify({name,email,password})
     await axios({
         method:"POST",
-        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/signup",
+        url:"https://kisaane.herokuapp.com/signup",
         data,
         headers:{
             "Content-Type":"application/json",
-            "Access-Control-Allow-Origin":"http://localhost:19006/"
+            // "Access-Control-Allow-Origin":"http://localhost:19006/"
             
         }
     }).then((res)=>{
@@ -34,7 +34,7 @@ export const login =  ({name,email,password})=>async(dispatch)=>{
     
     await axios({
         method:"POST",
-        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/signin",
+        url:"https://kisaane.herokuapp.com/signin",
         data,
         headers:{
             "Content-Type":"application/json"
@@ -58,7 +58,7 @@ export const loadUser = ()=>async(dispatch)=>{
 
     await axios({
         method:"POST",
-        url:"http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/user",
+        url:"https://kisaane.herokuapp.com/user",
         data,
         headers:{
             "Content-Type":"application/json",

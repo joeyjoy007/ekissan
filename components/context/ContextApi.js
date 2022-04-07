@@ -7,28 +7,41 @@ const FarmerContext = createContext()
 
 const ContextApis = ({children})=>{
  
-    const [token, setToken] = useState("")
-    const [userData, setuserData] = useState("")
+    const [user, setUser] = useState("")
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+
 
  
 
-    useEffect(() => {
-      const tokens =AsyncStorage.getItem('token')
-      setToken(tokens);
-      console.log("CONTEXT",tokens)
+
+    useEffect(async () => {
+      const userInfo =JSON.parse(await AsyncStorage.getItem('data'))
+     
+  
+      setUser(userInfo);
+     
+      
+
+      // const value = await AsyncStorage.getItem("@Test");
+      // return JSON.parse(value)
     
 
      
     }, [])
+   
     useEffect(() => {
-     const data= AsyncStorage.getItem("userData")
-     setuserData(data);
-     console.log("DATACONTEXT",data)
-    }, [])
+      if(isLoggedIn === false){
+        console.log(11)
+        AsyncStorage.clear()
+        setUser("")
+      }
+    }, [isLoggedIn])
+    
     
    
+   
 
-    return <FarmerContext.Provider value={{token}}>{children}</FarmerContext.Provider>
+    return <FarmerContext.Provider value={{user,setUser,isLoggedIn,setIsLoggedIn}}>{children}</FarmerContext.Provider>
 }
 
 export const FarmerState = ()=>{

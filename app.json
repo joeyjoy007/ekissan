@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "ekisaan",
-    "slug": "ekisaan",
+    "name": "ekisan",
+    "slug": "ekisan",
+    "scheme": "ekisan",
     "version": "1.0.3",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/farmer.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/farmer.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,14 +27,14 @@
         }
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/farmer.png",
         "backgroundColor": "#FFFFFF"
       },
       "package":"com.lng.ekisaan",
       "versionCode":4
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/farmer.png"
     }
   }
 }

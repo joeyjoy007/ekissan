@@ -1,4 +1,4 @@
-import { Alert, Dimensions, Image, ImageBackground, LogBox, Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, Image, ImageBackground, LogBox, Platform, StyleSheet,ScrollView, Text, View } from "react-native";
 import React, { useState ,useEffect} from "react";
 import { ActivityIndicator, TextInput } from "react-native-paper";
 import { Button } from "react-native-paper";
@@ -33,7 +33,7 @@ if (!getApps().length) {
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
-const AddMachinaries = () => {
+const ProductPage = () => {
   const [namee, setNamee] = useState("");
   const [price, setPrice] = useState();
 
@@ -47,11 +47,11 @@ const AddMachinaries = () => {
 const [upload, setUpload] = useState(false)
 const [imagename, setImagename] = useState("")
 const [loading, setLoading] = useState(false)
-const [loadingg, setLoadingg] = useState(false)
 const [changeButton, setChangeButton] = useState(false)
-const [pinCode, setPinCode] = useState("")
 const [modelNumber, setModelNumber] = useState("")
+const [loadCapacity, setLoadCapacity] = useState("")
 const [description, setDescription] = useState("")
+const [pinCode, setPinCode] = useState("")
 
 const {user} = FarmerState()
 
@@ -68,15 +68,13 @@ const permission = async()=>{
   permission()
   }, [])
 
- 
-  
 
  
 
   const addItem = async () => {
     // const token = await AsyncStorage.getItem("token");
     // console.log("TOKEN", token);
-    if(!namee || !price ||!city || !postalcode  ){
+    if(!namee || !price ||!city || !postalcode  ||!modelNumber ){
       alert("fill all fields")
     }
     try {
@@ -89,13 +87,14 @@ const permission = async()=>{
        
       }
 
-      const {data} = await axios.post("https://kisaane.herokuapp.com/create",{ name: namee,
+      const {data} = await axios.post("https://kisaane.herokuapp.com/createVehicle",{ name: namee,
       price: price,
       location: city,
       pinCode: pinCode,
-      image:imagename?imagename:"https://cdn1.vectorstock.com/i/1000x1000/50/20/no-photo-or-blank-image-icon-loading-images-vector-37375020.jpg",
+      image:imagename ?imagename:"https://cdn1.vectorstock.com/i/1000x1000/50/20/no-photo-or-blank-image-icon-loading-images-vector-37375020.jpg",
    
     modelNumber:modelNumber,
+    loadCapacity:loadCapacity,
     desc:description
   },config)
 
@@ -114,21 +113,12 @@ const permission = async()=>{
 
 
 
+
 const maybeRenderUploadingOverlay = () => {
   if (upload) {
     return (
-
       <View>
-       {/* style={[
-          StyleSheet.absoluteFill,
-          {
-            backgroundColor: "rgba(0,0,0,0.4)",
-          alignItems:"center",
-          position:"relative"
-          },
-        ]}
-      >
-      <ActivityIndicator style={{top:"50%"}} size="large" color="#fff" animating size="large" />*/}
+      
       </View>
     );
   }
@@ -142,7 +132,6 @@ const maybeRenderImage = () => {
   }
 
   return (
-
     <View
       style={{
         marginTop: 30,
@@ -150,29 +139,8 @@ const maybeRenderImage = () => {
         borderRadius: 3,
         elevation: 2,
       }}>
-   { /*>
-      <View
-        style={{
-          borderTopRightRadius: 3,
-          borderTopLeftRadius: 3,
-          shadowColor: "rgba(0,0,0,1)",
-          shadowOpacity: 0.2,
-          shadowOffset: { width: 4, height: 4 },
-          shadowRadius: 5,
-          overflow: "hidden",
-        }}
-      >
-        <Image source={{ uri: image }} style={{ width: 250, height: 250 }} />
-       
-      </View>
-      <Text
-       
-        style={{ paddingVertical: 10, paddingHorizontal: 10 }}
-      >
-       
-      </Text>*/}
+   {}
     </View>
-
   );
 };
 
@@ -224,18 +192,10 @@ const maybeRenderImage = () => {
   };
 
  
-  // const takePhoto = async () => {
-  //   let pickerResult = await ImagePicker.launchCameraAsync({
-  //     allowsEditing: true,
-  //     aspect: [4, 3],
-  //   });
-
-  //   handleImagePicked(pickerResult);
-  // };
 
   const pickImage = async () => {
     let pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: false,
+      allowsEditing: true,
       aspect: [4, 3],
     });
 
@@ -244,10 +204,9 @@ const maybeRenderImage = () => {
   };
 
   const handleImagePicked = async (pickerResult) => {
-    
-    
+    setLoading(true)
     try {
-      setLoadingg(true)
+
       setUpload(true)
       
       if (!pickerResult.cancelled) {
@@ -258,13 +217,12 @@ const maybeRenderImage = () => {
         alert("Image uploaded successfully")
       
       }
-      setLoadingg(false)
+      setLoading(false)
       setChangeButton(true)
   
     } catch (e) {
-      setLoadingg(false)
-      
-      alert("Upload failed, sorry ");
+      setLoading(false)
+      alert("Upload failed, sorry :(");
     } finally {
       setUpload(false)
     }
@@ -272,8 +230,7 @@ const maybeRenderImage = () => {
 
 
   async function uploadImageAsync(uri) {
-    // Why are we using XMLHttpRequest? See:
-    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+  
     console.log("going")
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
@@ -317,7 +274,7 @@ const maybeRenderImage = () => {
         value={namee}
         onChangeText={(text) => setNamee(text)}
       />
-     
+      
       <TextInput
         style={{ marginTop: 20 }}
         label="Price"
@@ -326,9 +283,7 @@ const maybeRenderImage = () => {
         onChangeText={(text) => setPrice(text)}
       />
       {/*!!image && (
-        
-
-
+     
       )*/}
 
      
@@ -337,7 +292,8 @@ const maybeRenderImage = () => {
       {maybeRenderUploadingOverlay()
       
       }
-      
+    
+
 
       <TextInput
         style={{ marginTop: 20 }}
@@ -350,55 +306,65 @@ const maybeRenderImage = () => {
       <TextInput
         style={{ marginTop: 20 }}
         label="PinCode"
+        // value={postalcode}
         value={pinCode}
         keyboardType="numeric"
         onChangeText={text => setPinCode(text)}
       />
 
-    
+      <TextInput
+      style={{ marginTop: 20 }}
+      label="Load Capacity (optional)"
+      value={loadCapacity}
+  
+      onChangeText={text => setLoadCapacity(text)}
+    />
+
+
+      <TextInput
+      style={{ marginTop: 20 }}
+      label="Vehicle number"
+      value={modelNumber}
+      onChangeText={text => setModelNumber(text)}
+     
+    />
+
     <TextInput
     style={{ marginTop: 20 }}
-    label="Vehicle Number"
-    value={modelNumber}
-    
-onChangeText={text => setModelNumber(text)}
+    label="Description (optional)"
+    multiline={true}
+      numberOfLines={4}
+      onChangeText={(val) => setText(val)}
+      value={description}
+      onChangeText={text=>setDescription(text)}
   />
-  <TextInput
-  style={{ marginTop: 20 }}
-  label="Description (optional)"
-	multiline={true}
-    numberOfLines={4}
-    onChangeText={(val) => setText(val)}
-    value={description}
-    onChangeText={text=>setDescription(text)}
-/>
-
 
       <View style={{marginTop:20}}>
-    {changeButton ?(
-      <Button mode="contained" style={{backgroundColor:"red"}} onPress={pickImage} disabled="true" >
-      image uploaded
-     </Button>
-    ):(
-      <Button mode="contained" style={{backgroundColor:"red"}} onPress={pickImage} loading={loadingg}>
-         upload image (optional)
-        </Button>
-      
-    )}  
-      </View>
 
-      <View style={{ marginTop: 20 }}>
-
-      {!namee || !price || !postalcode || !city ||!modelNumber  ?(
-        <Button mode="contained" onPress={() => addItem()}  style={{backgroundColor:"red"}} disabled="true">
-        Add Product
-      </Button>
+      { changeButton ?(
+        <Button mode="contained" style={{backgroundColor:"red"}} onPress={pickImage} disabled="true">
+        image uploaded
+       </Button>
       ):(
-        <Button mode="contained" onPress={() => addItem()} disabled={loadingg}>
-        Add Product
-      </Button>
+        <Button mode="contained" color="red" onPress={pickImage} loading={loading}>
+        upload image (optional)
+       </Button>
       )}
       
+      </View>
+      <View style={{ marginTop: 20 }}>
+
+      {! namee || !price || !city || !postalcode  || !modelNumber ?(
+        <Button mode="contained"  style={{backgroundColor:"red"}} onPress={() => addItem()} disabled="true">
+          Add Product
+        </Button>
+        
+      ):(
+        <Button mode="contained" onPress={() => addItem()} disabled={loading} >
+        Add Product
+      </Button>
+      
+      )}
         
 
 
@@ -433,21 +399,21 @@ onChangeText={text => setModelNumber(text)}
               radius={1000}
             />
           </MapView>
-          <Text>lets begin</Text>
+       
           </>
           
         ) : (
-          <Text></Text>
+         <Text></Text>
         )}
       </View>
-    
+
     </View>
     </ScrollView>
     </ImageBackground>
   );
 };
 
-export default AddMachinaries;
+export default ProductPage;
 
 const styles = StyleSheet.create({
   input: {
@@ -455,17 +421,16 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 20,
   },
-  containerr: {
-    flex:1,
-  
-
-    height:null,
-    width:null
-   },
   inp: {
     paddingHorizontal: 20,
     paddingVertical: 1,
   },
+  containerr: {
+    flex:1,
+
+    height:null,
+    width:null
+   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -475,6 +440,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get("window").width-20,
     marginLeft:-10,
+
     height: Dimensions.get("window").height,
   },
 });

@@ -1,36 +1,42 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {useDispatch} from "react-redux"
-import { logoutt } from "../store/actions/authentication";
+import { FarmerState } from "../context/ContextApi";
+
 
 const Home = ({ navigation }) => {
   const [email, setEmail] = useState("");
+  const {user} = FarmerState()
 
   const dispatch = useDispatch()
 
-  const boiler = async () => {
-    try {
-      const token = await AsyncStorage.getItem("token");
-const {data} = await axios.get("http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/f", {
-      headers: {
-        "Content-Type":"application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    
-      setEmail(data.email)
-     
-    } catch (error) {
-      console.log(error.message)
-      
-    }
-  };
+ 
 
-  useEffect(() => {
-    boiler();
-  }, []);
+//   const boiler = async () => {   need to be un cimmented
+//     try {
+//       // const token = await AsyncStorage.getItem("token");
+// const {data} = await axios.get("https://kisaane.herokuapp.com/
+  // /f", {
+//       headers: {
+//         "Content-Type":"application/json",
+//         Authorization: `Bearer ${user.token}`,
+//       },
+//     })
+//     console.log("DE",data)
+//       setEmail(data.email)
+     
+     
+//     } catch (error) {
+//       console.log(error.message)
+      
+//     }
+//   };
+
+//   useEffect(() => {
+//     boiler();
+//   }, []);
 
   const navigateToCreateProduct = ()=>{
     navigation.navigate("Product")
@@ -42,25 +48,19 @@ const {data} = await axios.get("http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6
 
   // const {myName} = route.params
 
-  const logout = () => {
-    dispatch(logoutt())
-    navigation.replace("Login")
-  };
+  
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.containerText}>Your Email is {email}</Text>
-      <Button
-        style={styles.buttonStyle}
-        onPress={() => logout()}
-        title="Logout"
-      />
+    <ImageBackground style={styles.containerr} source={{uri:"https://images.unsplash.com/photo-1586771107445-d3ca888129ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVnZW5lcmF0aXZlJTIwYWdyaWN1bHR1cmV8ZW58MHx8MHx8&w=1000&q=80"}}>
+    <View>
+ 
+      
 <TouchableOpacity onPress={()=>navigateToCreateProduct()}>
       <View style={styles.card}>
         <View>
           <View style={[styles.card, styles.shadowProp]}>
             <Text style={styles.heading}>
-              Create Product
+              Upload New Vehicle
             </Text>
           </View>
         </View>
@@ -71,13 +71,14 @@ const {data} = await axios.get("http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6
         <View>
           <View style={[styles.card, styles.shadowProp]}>
             <Text style={styles.heading}>
-              View Products
+              View Vehicle
             </Text>
           </View>
         </View>
       </View>
       </TouchableOpacity>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -89,6 +90,13 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     borderColor: "#fff",
   },
+  containerr: {
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
+    height:null,
+    width:null
+   },
   heading: {
     fontSize: 20,
     fontWeight: "bold",

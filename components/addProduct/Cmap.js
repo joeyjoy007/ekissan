@@ -2,7 +2,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import * as Location from "expo-location";
 import MapView, { Callout, Circle, Marker,PROVIDER_GOOGLE } from "react-native-maps";
-import { IconButton, Colors, TextInput } from "react-native-paper";
+import {TextInput } from "react-native-paper";
 
 const Cmap = () => {
 

@@ -1,29 +1,38 @@
-import { Image, StyleSheet, Text, View } from 'react-native'
+import { Button, Image, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { FarmerState } from '../context/ContextApi'
 
-const UserProfile = () => {
-  const {token} = FarmerState()
+const UserProfile = ({navigation}) => {
+  const {user,setIsLoggedIn,IsLoggedIn,setRemoveAll} = FarmerState()
 
-    const [userData, setUserData] = useState("fetching...")
-
-    const fetchUserDetail = async()=>{
-      // const token = await AsyncStorage.getItem("token")
-      const {data} = await axios.get("http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/f", {
-        headers: {
-          "Content-Type":"application/json",
-          Authorization: `Bearer ${token._W}`,
-        }},)
-        setUserData(data)
-   AsyncStorage.setItem("userData",data)
-
-    }
-    useEffect(() => {
-      fetchUserDetail()
-    }, [])
+    // const [userData, setUserData] = useState("fetching...")
     
+
+    // const fetchUserDetail = async()=>{
+    //   // const token = await AsyncStorage.getItem("token")
+    //   const {data} = await axios.get("https://kisaane.herokuapp.com/f", {
+    //     headers: {
+    //       "Content-Type":"application/json",
+    //       Authorization: `Bearer ${user.token}`,
+    //     }},)
+    //     setUserData(data)
+   
+
+    // }
+    // useEffect(() => {
+    //   fetchUserDetail()
+    // }, [])  //Help Me
+    
+    const logout = async()=>{
+     const k= await AsyncStorage.removeItem("data")
+     console.log("first",k)
+    //  setRemoveAll(true)
+      setIsLoggedIn(false)
+      navigation.replace("Login")
+    
+    }
 
   return (
     <View>
@@ -34,10 +43,13 @@ const UserProfile = () => {
       <View style={{display:"flex",justifyContent:"center",alignItems:"center",marginTop:20,padding:20}}>
       
       <View >
-      <Text  style={styles.name}>Name: {userData.name}</Text>
+      <Text  style={styles.name}>Name: {user.name}</Text>
       </View>
       <View style={styles.email}>
-      <Text  style={styles.email}>Email: {userData.email}</Text>
+      <Text  style={styles.email}>Email: {user.email}</Text>
+      </View>
+      <View style={styles.email}>
+      <Button title="logout" onPress={logout}/>
       </View>
       </View>
     </View>
@@ -55,7 +67,8 @@ const styles = StyleSheet.create({
     email:{
         fontWeight:"bold",
       fontSize:20,
-      color:"red"
+      color:"red",
+      marginTop:15
     },
     background:{
         backgroundColor:"black",

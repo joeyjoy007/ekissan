@@ -1,47 +1,35 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
+
+
 import React, { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { FarmerState } from "../context/ContextApi";
 
-
-import Home from '../Homes/Home';
-import Home2 from '../Homes/Home2';
-import { logoutt } from "../store/actions/authentication";
 
 // import {useDispatch} from "react-redux"
-// import { logoutt } from "./store/actions/authentication";
+
 
 const MainHome = ({ navigation }) => {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
+
+
+  
+  const {user} = FarmerState()
+
+useEffect(() => {
+  console.log("MAIN",user)
+  
+}, [])
 
 
  
   const dispatch = useDispatch()
 
-//   const boiler = async () => {
-//     try {
-//       const token = await AsyncStorage.getItem("token");
-// const {data} = await axios.get("http://localhost:4000/f", {
-//       headers: {
-//         "Content-Type":"application/json",
-//         Authorization: `Bearer ${token}`,
-//       },
-//     })
-    
-//       setEmail(data.email)
-     
-//     } catch (error) {
-//       console.log(error.message)
-      
-//     }
-//   };
 
-//   useEffect(() => {
-//     boiler();
-//   }, []);
+
 
   const navigateToHome = ()=>{
     navigation.navigate("Home")
@@ -53,17 +41,14 @@ const MainHome = ({ navigation }) => {
 
   // const {myName} = route.params
 
-  const logout = () => {
-    dispatch(logoutt())
-    navigation.replace("Login")
-  };
 
 
 
   return (
-    
-    <View>
+    <ImageBackground style={styles.containerr} source={{uri:"https://images.unsplash.com/photo-1586771107445-d3ca888129ff?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmVnZW5lcmF0aXZlJTIwYWdyaWN1bHR1cmV8ZW58MHx8MHx8&w=1000&q=80"}}>
 
+    <View>
+ 
 
    
     
@@ -71,6 +56,7 @@ const MainHome = ({ navigation }) => {
       <View style={styles.card}>
         <View>
           <View style={[styles.card, styles.shadowProp]}>
+      
             <Text style={styles.heading}>
               TransPortation Vehicle
             </Text>
@@ -89,12 +75,10 @@ const MainHome = ({ navigation }) => {
         </View>
       </View>
       </TouchableOpacity>
-       {/* <Button
-        style={styles.buttonStyle}
-        onPress={() => logout()}
-        title="Logout"
-       />*/}
+    
+     
     </View>
+    </ImageBackground>
   );
 };
 
@@ -105,6 +89,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingTop: 30,
     borderColor: "#fff",
+  },
+  containerr: {
+   flex:1,
+   justifyContent:"center",
+   alignItems:"center",
+   height:null,
+   width:null
   },
   heading: {
     fontSize: 20,

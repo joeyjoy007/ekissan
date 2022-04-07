@@ -24,6 +24,7 @@ export default(state=initial,{payload,type})=>{
         case REG_SUCCESS:
             return{
                 ...state,
+                ...payload,
                 regLoading:false,
                 isAuthenticate:true
             }

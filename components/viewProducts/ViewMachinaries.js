@@ -4,6 +4,7 @@ import {
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -27,66 +28,81 @@ import AppLoading from "expo-app-loading";
 import axios from "axios";
 import { FarmerState } from "../context/ContextApi";
 
-const ViewMachinaries = () => {
+const ViewMachinaries = ({navigation}) => {
   const [gp, setGp] = useState([]);
 
-  const [refresh, setRefresh] = useState(false);
-  const [searchData, setSearchData] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false)
+  const [searchData, setSearchData] = useState("")
+  const [term, setTerm] = useState("")
+  const [loading, setLoading] = useState(false)
 
-  const {token} = FarmerState()
+  const {user} = FarmerState()
 
-  //   const getProduct = async()=>{
-  //     const token = await AsyncStorage.getItem("token")
+//   const getProduct = async()=>{
+//     const token = await AsyncStorage.getItem("token")
+    
+//     const {data} = await axios.get("http://localhost:4000/getProduct",{
+//       headers:{
+//           "Content-Type":"application/json",
+//           Authorization: `Bearer ${token}`,
+//       },
+//     })
+  
+//     setGp(data.product)
+// }
 
-  //     const {data} = await axios.get("http://localhost:4000/getProduct",{
-  //       headers:{
-  //           "Content-Type":"application/json",
-  //           Authorization: `Bearer ${token}`,
-  //       },
-  //     })
 
-  //     setGp(data.product)
-  // }
+    
+     
 
-  // useEffect(() => {
-  //  getProduct()
-  // }, [])
+// useEffect(() => {
+//  getProduct()
+// }, [])
 
-  const searchProduct = async () => {
-    setLoading(true);
-    // const token = await AsyncStorage.getItem("token");
-    const { data } = await axios.get(
-      `http://a9ef-2409-4043-240d-11af-12eb-297f-5b08-6f1b.ngrok.io/searchVehicle?search=${searchData}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token._W}`,
-        },
+const searchProduct =async ()=>{
+  console.log("TOKK",user.token)
+  setLoading(true)
+  // const token = await AsyncStorage.getItem("token")
+ const {data} = await axios.get(`https://kisaane.herokuapp.com/search?search=${searchData}
+ `,{
+      
+      headers:{
+          "Content-Type":"application/json",
+          Authorization: `Bearer ${user.token}`,
       }
-    );
-    setLoading(false);
 
-    setGp(data);
-  };
+  })
+ setLoading(false)
+  setGp(data)
+  
+  
+ 
+   }
+ 
 
-  useEffect(() => {
-    searchProduct();
-  }, [searchData]);
+
+
+useEffect(() => {
+  
+ searchProduct()
+}, [searchData])
+
 
   let [fontsLoaded] = useFonts({
+    
     bold: Montserrat_300Light,
     bold1: Montserrat_400Regular,
-    bold2: Montserrat_500Medium,
-
-    regular: Montserrat_700Bold,
-
-    bold3: Montserrat_900Black,
-  });
-
-  if (!fontsLoaded) {
-    return <AppLoading />;
-  }
+     bold2:Montserrat_500Medium,
+   
+     regular:Montserrat_700Bold,
+   
+     bold3:Montserrat_900Black,
+   });
+ 
+   if(!fontsLoaded )
+   {
+     return <AppLoading/>;
+   }
 
   // const data = [
   //   {
@@ -108,78 +124,132 @@ const ViewMachinaries = () => {
   //     pinCode: 458441,
   //   },
   // ];
-  const pressCall=()=>{
-    const url='tel://7987280833'
-    Linking.openURL(url)
-  }
+const navigateToDetail=(item)=>{
+ console.log(item)
+  navigation.navigate("ProductDetail",{
+    detail:item
+  })
+}
 
-  const renderData = ({ item }) => {
-    return (
-      <View>
-        <View style={styles.card}>
-        <View style={{display:"flex",flexDirection:"row",justifyContent:"space-evenly"}}>
-        
-          <View style={{paddingHorizontal:-40}}>
-            <Image source={{ uri: item.image, width: 70, height: 90}} />
-          </View>
-          
-          <View style={{ display: "flex", flexDirection: "column" }}>
-            <View style={[styles.cardItem]}>
-           
-              
-              <Text style={[styles.productName]}> {item.name}</Text>
-            </View>
-            <View style={styles.cardItem}>
-              <Text style={styles.productName}>₹ {item.price}</Text>
-            </View>
-            <View style={styles.cardItem}>
-              <Text style={styles.productName}>
-                <Icon name="location-pin" size={14} color="black" />{" "}
-                {item.location}
-              </Text>
-            </View>
-          </View>
-          
-<View style={{display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
-<View style={[ { alignSelf: "flex-start" }]}>
-            <Text style={styles.productName} onPress={pressCall}>no.9827544480</Text>
-          </View>
-          <View style={[styles.cardItem, { alignSelf: "flex-end" }]}>
-            <Text style={styles.productName}>Pincode: {item.pinCode}</Text>
-          </View>
-          </View>
-          </View>
-        </View>
-      </View>
-    );
-  };
+//  const renderData = ({item})=>{
+//   return (
+    
+//     <View>
+//     <TouchableOpacity onPress={k}>
+//       <View style={styles.card}>
+//         <View style={{display:"flex",flexDirection:"column"}}>
+//           <View style={[styles.cardItem]}>
+//             <Text style={[styles.productName,{alignSelf:"flex-end"},styles.rent]}> OnRent</Text>
+//             <Text style={styles.productName}>   {item.name}</Text>
+//           </View>
+//           <View style={styles.cardItem}>
+//             <Text style={styles.productName}>₹ {item.price}</Text>
+//           </View>
+//           <View style={styles.cardItem}>
+//            <Text style={styles.productName}><Icon name="location-pin" size={14} color="black" /> {item.location}</Text>
+//           </View>
+//         </View>
+
+//         <View style={[styles.cardItem,{alignSelf:"flex-end"}]}>
+//           <Text style={styles.productName}>Pincode: {item.pinCode}</Text>
+//         </View>
+//       </View>
+//       </TouchableOpacity>
+//     </View>
+  
+
+//   );
+//  }
+     
+
+
+
+
 
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar
-        placeholder="Search"
-        value={searchData}
-        onChangeText={(text) => setSearchData(text)}
-        style={{ width: width - 20, marginHorizontal: 10 }}
-      />
-      {loading ? (
-        <View
-          style={{ display: "flex", justifyContent: "center", height: "90%" }}
-        >
-          <ActivityIndicator
-            size="large"
-            animating={true}
-            color={Colors.blue800}
-          />
+    <Searchbar
+    placeholder="Search"
+    value = {searchData}
+    onChangeText={(text)=>setSearchData(text)}
+
+    style={{width:width-20,marginHorizontal:10}}
+    // onEndEditing = {()=>{
+    //   setSearchData(term)
+    // }}
+    
+  />
+  {loading ?(
+    <View style={{display:"flex",justifyContent:"center",height:"90%"}}>
+   <ActivityIndicator size="large" animating={true} color={Colors.blue800} />
+   </View>):(
+    <FlatList
+    data={gp}
+    
+    renderItem={({item})=>(
+      <TouchableOpacity onPress={() => navigateToDetail(item)}>
+      <View>
+        <View style={styles.card}>
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+            }}
+          >
+            <View style={{ }}>
+              <Image
+                source={{ uri: item.image, width: 70, height: 90 }}
+              />
+            </View>
+
+            <View
+              style={{ display: "flex", flexDirection: "column" }}
+            >
+              <View style={[styles.cardItem]}>
+                <Text style={[styles.productName]}> {item.name}</Text>
+              </View>
+              <View style={styles.cardItem}>
+                <Text style={styles.productName}>₹ {item.price}/hr</Text>
+              </View>
+              <View style={styles.cardItem}>
+                <Text style={styles.productName}>
+                  <Icon name="location-pin" size={14} color="black" />{" "}
+                  {item.location}
+                </Text>
+              </View>
+            </View>
+
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={[{ alignSelf: "flex-start" }]}></View>
+              <View
+                style={[styles.cardItem, {}]}
+              >
+                <Text style={styles.productName}>
+                  {item.modelNumber}
+                </Text>
+              </View>
+            </View>
+          </View>
         </View>
-      ) : (
-        <FlatList
-          data={gp}
-          renderItem={renderData}
-          keyExtractor={(item) => item.name}
-          showsHorizontalScrollIndicator={false}
-        />
-      )}
+      </View>
+    </TouchableOpacity>
+    )}
+    
+    keyExtractor={(item) => item.name}
+      showsHorizontalScrollIndicator={false}
+    
+    
+  />
+   )
+   }
+   
     </SafeAreaView>
   );
 };
@@ -192,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 8,
     paddingVertical: 5,
-    paddingHorizontal: -5,
+   
     paddingTop: 5,
     width: width - 20,
     marginVertical: 10,
@@ -206,7 +276,7 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 15,
     fontFamily: "regular",
-    paddingHorizontal:-25
+  
   },
   cardItem: {
     marginTop: 6,
