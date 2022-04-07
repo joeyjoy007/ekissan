@@ -60,7 +60,7 @@ const ViewMachinaries = ({navigation}) => {
 // }, [])
 
 const searchProduct =async ()=>{
-  console.log("TOKK",user.token)
+
   setLoading(true)
   // const token = await AsyncStorage.getItem("token")
  const {data} = await axios.get(`https://kisaane.herokuapp.com/search?search=${searchData}
@@ -104,28 +104,8 @@ useEffect(() => {
      return <AppLoading/>;
    }
 
-  // const data = [
-  //   {
-  //     name: "garvit",
-  //     price: 234567,
-  //     location: "location",
-  //     pinCode: 34434,
-  //   },
-  //   {
-  //     name: "jay",
-  //     price: 8787,
-  //     location: "Chandigarh",
-  //     pinCode: 458441,
-  //   },
-  //   {
-  //     name: "kapil",
-  //     price: 8767,
-  //     location: "aasam",
-  //     pinCode: 458441,
-  //   },
-  // ];
 const navigateToDetail=(item)=>{
- console.log(item)
+
   navigation.navigate("ProductDetail",{
     detail:item
   })

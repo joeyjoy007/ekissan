@@ -88,7 +88,7 @@ const Register = ({navigation}) =>{
       navigation.navigate("Login")
     }
     useEffect(() => {
-     console.log(auth.isAuthenticate)
+    
       if(auth.isAuthenticate){
         
         navigation.replace("Login")

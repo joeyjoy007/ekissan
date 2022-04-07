@@ -34,15 +34,15 @@ const ForgotPassword = ({navigation}) =>{
     
 
       const sendEmail =async()=>{
-        console.log(1)
+
         setLoading(true)
 if(!email){
-  console.log(2)
+
   alert("fill field")
 setLoading(false)
 return
 }
-     console.log(3)
+  
 
 
   try {
@@ -55,7 +55,7 @@ return
    
 
     const {data} = await axios.post("https://kisaane.herokuapp.com/forgotPassword",{email})
-console.log(data)
+
     
     if(data.statusText ==="error"){
       alert('email not found')

@@ -22,7 +22,7 @@ const AllNavigations = () => {
     const stack = createNativeStackNavigator()
 
     const {isLoggedIn} = FarmerState()
-    console.log("LLLL",isLoggedIn)
+    
   return (
 
 

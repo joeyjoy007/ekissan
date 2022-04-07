@@ -44,7 +44,7 @@ export const login =  ({name,email,password})=>async(dispatch)=>{
         dispatch({type:CLEAR_ERROR,payload:null})
         
         dispatch({type:LOGIN_SUCCESS,payload:res.data})
-        console.log(1)
+     
     }).catch((err)=>{
         dispatch({type:LOGIN_FAILED,payload:null})
 
@@ -54,7 +54,7 @@ export const login =  ({name,email,password})=>async(dispatch)=>{
 export const loadUser = ()=>async(dispatch)=>{
     dispatch({type:LOG_LOADING,payload:null})
     const token = await AsyncStorage.getItem("token")
-    console.log("GLOBAL TOKEN",token)
+ 
 
     await axios({
         method:"POST",
@@ -74,7 +74,7 @@ export const loadUser = ()=>async(dispatch)=>{
 
 export const logoutt = ()=>async(dispatch)=>{
     await AsyncStorage.removeItem("token")
-    console.log("item removed")
+   
     return dispatch({
         type:LOGOUT_SUCCESS,
         payload:null

@@ -31,7 +31,7 @@ const ContextApis = ({children})=>{
    
     useEffect(() => {
       if(isLoggedIn === false){
-        console.log(11)
+       
         AsyncStorage.clear()
         setUser("")
       }

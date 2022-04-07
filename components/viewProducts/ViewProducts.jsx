@@ -89,28 +89,9 @@ const ViewProducts = ({ navigation }) => {
     return <AppLoading />;
   }
 
-  // const data = [
-  //   {
-  //     name: "garvit",
-  //     price: 234567,
-  //     location: "location",
-  //     pinCode: 34434,
-  //   },
-  //   {
-  //     name: "jay",
-  //     price: 8787,
-  //     location: "Chandigarh",
-  //     pinCode: 458441,
-  //   },
-  //   {
-  //     name: "kapil",
-  //     price: 8767,
-  //     location: "aasam",
-  //     pinCode: 458441,
-  //   },
-  // ];
+ 
   const navigateToDetail = (item) => {
-    console.log(item);
+   
     navigation.navigate("ProductDetail", {
       detail: item,
     });

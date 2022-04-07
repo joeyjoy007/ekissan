@@ -274,7 +274,7 @@ const maybeRenderImage = () => {
   async function uploadImageAsync(uri) {
     // Why are we using XMLHttpRequest? See:
     // https://github.com/expo/expo/issues/2402#issuecomment-443726662
-    console.log("going")
+  
     const blob = await new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
       xhr.onload = function () {
@@ -284,19 +284,19 @@ const maybeRenderImage = () => {
         
         reject(new TypeError("Network request failed"));
       };
-      console.log(23)
+    
       xhr.responseType = "blob";
-      console.log(24)
+   
       xhr.open("GET", uri, true);
-      console.log(25)
+
       xhr.send(null);
-      console.log(26)
+  
     });
-  console.log(27)
+
     const fileRef = ref(getStorage(), uuid.v4());
-    console.log(28)
+ 
     const result = await uploadBytes(fileRef, blob);
-    console.log(29)
+  
    
    
   
